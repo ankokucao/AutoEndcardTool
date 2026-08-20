@@ -12,3 +12,10 @@ tools/
 # Logs and temporary files
 *.log
 *.tmp
+
+# Python and PyInstaller build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+dist/
