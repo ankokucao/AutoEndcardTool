@@ -1,0 +1,14 @@
+# Local user configuration (may contain private paths)
+auto_endcard_config.json
+
+# Generated preview and output files
+.preview_cache/
+output/
+preview_*.png
+
+# Local FFmpeg binaries and tool files
+tools/
+
+# Logs and temporary files
+*.log
+*.tmp
