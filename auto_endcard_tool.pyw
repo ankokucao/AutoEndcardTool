@@ -1,4 +1,4 @@
-from auto_endcard.ui import main
+from auto_endcard.neui_ui import main
 
 
 if __name__ == "__main__":

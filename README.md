@@ -1,8 +1,19 @@
 # Auto Endcard Tool
 
-Auto Endcard Tool 是一个 Windows 批量视频片尾拼接工具。v4.2 采用单比例、纯视频片尾处理：每次先选择 16:9、1:1 或 9:16，再扫描原视频目录，只为画面比例与所选视频片尾一致的文件生成结果。
+Auto Endcard Tool 是一个 Windows 批量视频片尾拼接工具。v5.0 使用 NEUI 重构图形界面，并延续单比例、纯视频片尾处理：每次先选择 16:9、1:1 或 9:16，再扫描原视频目录，只为画面比例与所选视频片尾一致的文件生成结果。
 
-## v4.2 处理方式
+## v5.0 NEUI 界面
+
+- 使用 NEUI、Skia 和 GLFW 构建 GPU 加速界面。
+- 统一为现代深色视觉，按“本次任务、路径设置、导出设置、进度、日志”分区。
+- 中文字体统一使用 Microsoft YaHei UI，避免 Skia 默认字体缺少中文字形。
+- 使用 Windows 原生文件与文件夹选择窗口，不再依赖 Tkinter/Tcl/Tk。
+- 处理线程通过界面事件队列更新进度和日志，避免后台任务直接改写控件。
+- 窗口关闭时仍会保存配置；处理过程中退出会先提示确认。
+
+NEUI 当前仅支持 Windows，运行机器需要具备 OpenGL 兼容显卡。界面使用 GPU 渲染不代表视频使用 GPU 编码；视频编码仍为 libx264。
+
+## 单比例处理方式
 
 - 界面顶部选择本次生成比例。
 - 每次任务只使用所选比例对应的一个视频片尾文件。
@@ -106,7 +117,11 @@ Auto Endcard Tool 是一个 Windows 批量视频片尾拼接工具。v4.2 采用
 
 ## 运行源码
 
-运行环境：Python 3.10 或更高版本。运行时只使用 Python 标准库，视频处理依赖外部 FFmpeg。
+运行环境：Python 3.10 或更高版本、Windows 10/11 和 OpenGL 兼容显卡。界面依赖 NEUI，视频处理依赖外部 FFmpeg。
+
+先安装运行依赖：
+
+    python -m pip install -r requirements.txt
 
 ```powershell
 python .\auto_endcard_tool.pyw
@@ -149,7 +164,8 @@ python -m pip install -r requirements-dev.txt
 AutoEndcardTool/
 ├─ auto_endcard_tool.pyw       # GUI 入口
 ├─ auto_endcard/
-│  ├─ ui.py                    # 界面与线程事件调度
+│  ├─ neui_ui.py               # NEUI 界面与线程事件调度
+│  ├─ ui.py                    # 旧导入路径的兼容层
 │  ├─ processor.py             # 批处理编排和文件扫描
 │  ├─ media.py                 # FFprobe 探测与 FFmpeg 合成
 │  ├─ config.py                # 配置读写
@@ -159,6 +175,7 @@ AutoEndcardTool/
 ├─ tests/                      # 标准库 unittest 测试
 ├─ AutoEndcardTool.spec        # PyInstaller 构建配置
 ├─ build.ps1                   # Windows 构建脚本
+├─ requirements.txt            # NEUI 运行依赖
 └─ requirements-dev.txt        # 构建依赖
 ```
 
